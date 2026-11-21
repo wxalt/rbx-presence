@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="80%">
+      <stop offset="0" stop-color="#1c1f28"/>
+      <stop offset="1" stop-color="#07080b"/>
+    </radialGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff5a52"/>
+      <stop offset="1" stop-color="#d3151f"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ef3038" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#ef3038" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#000" flood-opacity=".6"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <circle cx="512" cy="540" r="470" fill="url(#glow)"/>
+  <g transform="rotate(-14 512 512)">
+    <rect x="212" y="212" width="600" height="600" rx="150" fill="url(#tile)" filter="url(#sh)"/>
+    <rect x="212" y="212" width="600" height="600" rx="150" fill="url(#gloss)"/>
+  </g>
+  <!-- presence glyph: dot + broadcast arcs -->
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-width="52">
+    <path d="M 510 410 A 130 130 0 0 1 510 614"/>
+    <path d="M 569 335 A 225 225 0 0 1 569 689" opacity=".6"/>
+  </g>
+  <circle cx="430" cy="512" r="76" fill="#fff"/>
+</svg>
