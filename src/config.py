@@ -11,6 +11,7 @@ CONFIG_FILE = APP_DIRECTORY / "config.json"
 DEFAULT_CONFIG: dict[str, Any] = {
     "client_id": "",
     "asset_key": "rbx_presence",
+    "pipe": "",  # vide = auto ; 0-9 = choisir un client Discord précis
     "auto_monitor": False,  # démarre la surveillance dès l'ouverture de l'app
 }
 
@@ -27,6 +28,7 @@ def load_config() -> dict[str, Any]:
         "client_id": str(data.get("client_id", DEFAULT_CONFIG["client_id"])).strip(),
         "asset_key": str(data.get("asset_key", DEFAULT_CONFIG["asset_key"])).strip()
         or DEFAULT_CONFIG["asset_key"],
+        "pipe": str(data.get("pipe", "")).strip(),
         "auto_monitor": bool(data.get("auto_monitor", DEFAULT_CONFIG["auto_monitor"])),
     }
 

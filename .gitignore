@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+*.spec
+*.manifest
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local config (never commit personal Discord Application ID)
+# The real config lives in %APPDATA%\RBXPresence\config.json
+*.local.json
+
+# Logs / temp
+*.log
+*.tmp
+
+# Local
+.venv-build/

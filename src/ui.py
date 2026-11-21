@@ -67,7 +67,7 @@ class App(tk.Tk):
         self.scale = max(1.0, self.winfo_fpixels("1i") / 96.0)
         self.title("RBX Presence")
         self.configure(bg=BG)
-        w, h = self.s(820), self.s(620)
+        w, h = self.s(820), self.s(720)
         self.geometry(f"{w}x{h}")
         self.minsize(w, h)
         self._set_icon()
@@ -204,21 +204,30 @@ class App(tk.Tk):
             8, MUTED, justify="left", anchor="w", wraplength=s(250),
         ).grid(row=5, column=0, sticky="w", padx=pad)
 
+        self._label(left, "Discord client number (optional)").grid(row=6, column=0, sticky="w", padx=pad, pady=(s(12), 0))
+        self.pipe_entry = self._entry(left)
+        self.pipe_entry.grid(row=7, column=0, sticky="ew", padx=pad, pady=(s(6), s(4)), ipady=s(7))
+        self.pipe_entry.insert(0, self.config_data["pipe"])
+        self._label(
+            left, "Empty = automatic. If the presence shows on the wrong account, try 0, 1, 2…",
+            8, MUTED, justify="left", anchor="w", wraplength=s(250),
+        ).grid(row=8, column=0, sticky="w", padx=pad)
+
         self._check(left, "Start monitoring when the app opens", self.auto_monitor_var, self._save_settings).grid(
-            row=6, column=0, sticky="w", padx=pad, pady=(s(12), 0)
+            row=9, column=0, sticky="w", padx=pad, pady=(s(12), 0)
         )
         if startup.is_supported():
             self._check(left, "Launch with Windows (minimized)", self.autostart_var, self._toggle_autostart).grid(
-                row=7, column=0, sticky="w", padx=pad
+                row=10, column=0, sticky="w", padx=pad
             )
 
         self.start_button = FlatButton(left, "Start monitoring", self._start_monitoring, ACCENT, ACCENT_HOVER, bold=True, pady=s(10))
-        self.start_button.grid(row=8, column=0, sticky="ew", padx=pad, pady=(s(14), s(8)))
+        self.start_button.grid(row=11, column=0, sticky="ew", padx=pad, pady=(s(14), s(8)))
         self.stop_button = FlatButton(left, "Stop", self._stop_monitoring, "#252932", "#303541", pady=s(8))
-        self.stop_button.grid(row=9, column=0, sticky="ew", padx=pad)
+        self.stop_button.grid(row=12, column=0, sticky="ew", padx=pad)
         self.stop_button.set_enabled(False)
         FlatButton(left, "Open Roblox logs", self._open_logs, PANEL, PANEL_ALT, fg=MUTED, border="#292e38", pady=s(6)).grid(
-            row=10, column=0, sticky="ew", padx=pad, pady=(s(10), pad)
+            row=13, column=0, sticky="ew", padx=pad, pady=(s(10), pad)
         )
 
         # -- carte session ---------------------------------------------------
@@ -273,6 +282,7 @@ class App(tk.Tk):
         self.config_data = {
             "client_id": self.client_id_entry.get().strip(),
             "asset_key": self.asset_key_entry.get().strip() or "rbx_presence",
+            "pipe": self.pipe_entry.get().strip(),
             "auto_monitor": bool(self.auto_monitor_var.get()),
         }
         try:
@@ -296,7 +306,13 @@ class App(tk.Tk):
             self._set_status("Enter a valid numeric Discord Application ID first.", BAD)
             return
 
-        self.controller.start(client_id, self.config_data["asset_key"])
+        pipe_text = self.config_data["pipe"]
+        if pipe_text and not (pipe_text.isdigit() and int(pipe_text) <= 9):
+            self._set_status("Discord client number must be empty or a digit from 0 to 9.", BAD)
+            return
+        self.controller.start(
+            client_id, self.config_data["asset_key"], int(pipe_text) if pipe_text else None
+        )
         self.monitoring = True
         self.start_button.set_enabled(False)
         self.stop_button.set_enabled(True)

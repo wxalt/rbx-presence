@@ -36,13 +36,15 @@ class PresenceController:
         self.thread: threading.Thread | None = None
         self.client_id = ""
         self.asset_key = "rbx_presence"
+        self.pipe: int | None = None
         self._last_event: tuple[str, str] | None = None
 
     # -- cycle de vie ------------------------------------------------------- #
-    def start(self, client_id: str, asset_key: str) -> None:
+    def start(self, client_id: str, asset_key: str, pipe: int | None = None) -> None:
         self.stop()
         self.client_id = client_id.strip()
         self.asset_key = asset_key.strip()
+        self.pipe = pipe
         self.stop_event = threading.Event()
         self._last_event = None
         self.thread = threading.Thread(
@@ -64,7 +66,7 @@ class PresenceController:
 
     # -- Discord ------------------------------------------------------------ #
     def _connect(self) -> Presence:
-        rpc = Presence(self.client_id)
+        rpc = Presence(self.client_id, pipe=self.pipe)
         try:
             rpc.connect()
         except BaseException:
